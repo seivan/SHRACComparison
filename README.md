@@ -1,14 +1,13 @@
 
-######First Sample
+#####First Sample
 ```objective-c
+  [self SH_addObserverForKeyPaths:@[@"username"] withOptions:0 block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
+    NSLog(@"%@", ((SHViewController *)weakSelf).username);
+    }];
 
-  NSString * identifier = [self SH_addObserverForKeyPaths:@[@"username"] withOptions:0
-                            block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
-                              NSLog(@"%@", ((SHViewController *)weakSelf).username);
-                            }];
 ```
 
-######Second Sample
+#####Second Sample
 ```objective-c
   [self SH_addObserverForKeyPaths:@[@"username"] withOptions:0 block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
   
@@ -20,7 +19,7 @@
   
 ```
 
-######Third Sample
+#####Third Sample
 ```objective-c
   __weak typeof(self) caller = self;
   SHKeyValueObserverBlock block = ^(id weakSelf, NSString *keyPath, NSDictionary *change) {
@@ -30,7 +29,7 @@
   
 ```
 
-######Fourth Sample
+#####Fourth Sample
 ```objective-c
   [self.btnSample SH_addControlEventTouchUpInsideWithBlock:^(UIControl *sender) {
     NSLog(@"button was pressed!");
