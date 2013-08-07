@@ -22,6 +22,7 @@
 @property(nonatomic,strong) UIButton * btnSample;
 
 -(void)firstSample;
+
 -(void)secondSample;
 -(void)thirdSample;
 -(void)fourthSample;
