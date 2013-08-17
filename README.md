@@ -34,6 +34,26 @@
   [self.btnSample SH_addControlEventTouchUpInsideWithBlock:^(UIControl *sender) {
     NSLog(@"button was pressed!");
   }];
+```
+
+
+#####Fifth Sample
+
+```objective-c
+-(void)fifthSample; {
+  [self.btnSample SH_addControlEventTouchUpInsideWithBlock:^(UIControl *sender) {
+    dispatch_group_t groupSignal = dispatch_group_create();
+    [SHUser loginWithGroupSignal:groupSignal];
+    dispatch_group_notify(groupSignal, dispatch_get_main_queue(), ^{ self.didLogin = YES; });
+  }];
   
+  [self SH_addObserverForKeyPaths:@[@"didLogin"] withOptions:0 block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
+    if(self.didLogin) NSLog(@"Logged in successfully");
+  }];
+  
+  [self.btnSample sendActionsForControlEvents:UIControlEventTouchUpInside];
+  
+}
+
 ```
   
