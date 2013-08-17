@@ -11,7 +11,7 @@
 `SHFoundationAdditions` adds enumeration and KVO blocks without any hacks or libffi dependencies.
 Observers will remove themselves once the object gets deallocated. You can toggle it off. 
 
-> This pod is part of a many components covering to plug the holes missing from Foundation, UIKit, CoreLocation, GameKit, MapKit and other aspects of an iOS application's architecture. 
+> This pod is part of many components covering to plug the holes missing from Foundation, UIKit, CoreLocation, GameKit, MapKit and other aspects of an iOS application's architecture. 
 
 - [SHUIKitBlocks](https://github.com/seivan/SHUIKitBlocks)
 - [SHTestCaseAdditions](https://github.com/seivan/SHTestCaseAdditions)
@@ -30,7 +30,7 @@ pod 'SHFoundationAdditions'
 | [SHKeyValueObserverBlocks](https://github.com/seivan/SHKeyValueObserverBlocks)| [![Build Status](https://travis-ci.org/seivan/SHKeyValueObserverBlocks.png?branch=master)](https://travis-ci.org/seivan/SHKeyValueObserverBlocks)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHKeyValueObserverBlocks/badge.png)](http://cocoadocs.org/docsets/SHKeyValueObserverBlocks) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHKeyValueObserverBlocks/badge.png)](http://cocoadocs.org/docsets/SHKeyValueObserverBlocks) |
 | [SHFastEnumerationProtocols](https://github.com/seivan/SHFastEnumerationProtocols)| [![Build Status](https://travis-ci.org/seivan/SHFastEnumerationProtocols.png?branch=master)](https://travis-ci.org/seivan/SHFastEnumerationProtocols)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHFastEnumerationProtocols/badge.png)](http://cocoadocs.org/docsets/SHFastEnumerationProtocols) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHFastEnumerationProtocols/badge.png)](http://cocoadocs.org/docsets/SHFastEnumerationProtocols) |
 | [SHObjectUserInfo](https://github.com/seivan/SHObjectUserInfo)| [![Build Status](https://travis-ci.org/seivan/SHObjectUserInfo.png?branch=master)](https://travis-ci.org/seivan/SHObjectUserInfo)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHObjectUserInfo/badge.png)](http://cocoadocs.org/docsets/SHObjectUserInfo) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHObjectUserInfo/badge.png)](http://cocoadocs.org/docsets/SHObjectUserInfo) |
-
+| [SHInvocation](https://github.com/seivan/SHInvocation)| [![Build Status](https://travis-ci.org/seivan/SHInvocation.png?branch=master)](https://travis-ci.org/seivan/SHInvocation)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHInvocation/badge.png)](http://cocoadocs.org/docsets/SHInvocation) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHInvocation/badge.png)](http://cocoadocs.org/docsets/SHInvocation) |
 
 ##Import
 

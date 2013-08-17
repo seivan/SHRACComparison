@@ -11,6 +11,23 @@
 #import "SHFoundationAdditions.h"
 #import "SHUIKitBlocks.h"
 
+@interface SHUser : NSObject
++(void)loginWithGroupSignal:(dispatch_group_t)theSignal;
+@end
+
+@implementation SHUser
+
++(void)loginWithGroupSignal:(dispatch_group_t)theSignal; {
+  dispatch_group_enter(theSignal);
+  double delayInSeconds = 2.0;
+  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    dispatch_group_leave(theSignal);
+  });
+}
+
+@end
+
 @interface SHViewController ()
 @property(nonatomic,strong) NSString * username;
 
@@ -21,8 +38,9 @@
 
 @property(nonatomic,strong) UIButton * btnSample;
 
--(void)firstSample;
+@property(nonatomic,assign) BOOL       didLogin;
 
+-(void)firstSample;
 -(void)secondSample;
 -(void)thirdSample;
 -(void)fourthSample;
@@ -96,6 +114,22 @@
   }];
   
   [self.btnSample sendActionsForControlEvents:UIControlEventTouchUpInside];
+  [self.btnSample SH_removeAllControlEventsBlocks];
+}
+
+-(void)fifthSample; {
+  [self.btnSample SH_addControlEventTouchUpInsideWithBlock:^(UIControl *sender) {
+    dispatch_group_t groupSignal = dispatch_group_create();
+    [SHUser loginWithGroupSignal:groupSignal];
+    dispatch_group_notify(groupSignal, dispatch_get_main_queue(), ^{ self.didLogin = YES; });
+  }];
+  
+  [self SH_addObserverForKeyPaths:@[@"didLogin"] withOptions:0 block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
+    if(self.didLogin) NSLog(@"Logged in successfully");
+  }];
+  
+  [self.btnSample sendActionsForControlEvents:UIControlEventTouchUpInside];
+  
 }
 
 

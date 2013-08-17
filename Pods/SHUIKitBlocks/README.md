@@ -12,10 +12,10 @@
 
 > This pod is part of a many components covering to plug the holes missing from Foundation, UIKit, CoreLocation, GameKit, MapKit and other aspects of an iOS application's architecture. 
 
-- [SHFastEnumerationProtocols](https://github.com/seivan/SHFastEnumerationProtocols)
-- [SHKeyValueObserverBlocks](https://github.com/seivan/SHKeyValueObserverBlocks)
+- [SHFoundationAdditions](https://github.com/seivan/SHFoundationAdditions)
 - [SHGameCenter](https://github.com/seivan/SHGameCenter)
 - [SHMessageUIBlocks](https://github.com/seivan/SHMessageUIBlocks)
+
 
 ##Install
 ```ruby
@@ -35,14 +35,16 @@ pod 'SHUIKitBlocks'
 | [SHBarButtonItemBlocks](https://github.com/seivan/SHBarButtonItemBlocks)| [![Build Status](https://travis-ci.org/seivan/SHBarButtonItemBlocks.png?branch=master)](https://travis-ci.org/seivan/SHBarButtonItemBlocks)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHBarButtonItemBlocks/badge.png)](http://cocoadocs.org/docsets/SHBarButtonItemBlocks) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHBarButtonItemBlocks/badge.png)](http://cocoadocs.org/docsets/SHBarButtonItemBlocks) |
 | [SHActionSheetBlocks](https://github.com/seivan/SHActionSheetBlocks)| [![Build Status](https://travis-ci.org/seivan/SHActionSheetBlocks.png?branch=master)](https://travis-ci.org/seivan/SHActionSheetBlocks)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHActionSheetBlocks/badge.png)](http://cocoadocs.org/docsets/SHActionSheetBlocks) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHActionSheetBlocks/badge.png)](http://cocoadocs.org/docsets/SHActionSheetBlocks) |
 | [SHGestureRecognizerBlocks](https://github.com/seivan/SHGestureRecognizerBlocks)| [![Build Status](https://travis-ci.org/seivan/SHGestureRecognizerBlocks.png?branch=master)](https://travis-ci.org/seivan/SHGestureRecognizerBlocks)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHGestureRecognizerBlocks/badge.png)](http://cocoadocs.org/docsets/SHGestureRecognizerBlocks) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHGestureRecognizerBlocks/badge.png)](http://cocoadocs.org/docsets/SHGestureRecognizerBlocks) |
-
+| [SHTextFieldBlocks](https://github.com/seivan/SHTextFieldBlocks)| [![Build Status](https://travis-ci.org/seivan/SHTextFieldBlocks.png?branch=master)](https://travis-ci.org/seivan/SHTextFieldBlocks)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHTextFieldBlocks/badge.png)](http://cocoadocs.org/docsets/SHTextFieldBlocks) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHTextFieldBlocks/badge.png)](http://cocoadocs.org/docsets/SHTextFieldBlocks) |
+| [SHTextViewBlocks](https://github.com/seivan/SHTextViewBlocks)| [![Build Status](https://travis-ci.org/seivan/SHTextViewBlocks.png?branch=master)](https://travis-ci.org/seivan/SHTextViewBlocks)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHTextViewBlocks/badge.png)](http://cocoadocs.org/docsets/SHTextViewBlocks) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHTextViewBlocks/badge.png)](http://cocoadocs.org/docsets/SHTextViewBlocks) |
+| [SHTabBarControllerBlocks](https://github.com/seivan/SHTabBarControllerBlocks)| [![Build Status](https://travis-ci.org/seivan/SHTabBarControllerBlocks.png?branch=master)](https://travis-ci.org/seivan/SHTabBarControllerBlocks)| [![Version](http://cocoapod-badges.herokuapp.com/v/SHTabBarControllerBlocks/badge.png)](http://cocoadocs.org/docsets/SHTabBarControllerBlocks) | [![Platform](http://cocoapod-badges.herokuapp.com/p/SHTabBarControllerBlocks/badge.png)](http://cocoadocs.org/docsets/SHTabBarControllerBlocks) |
 
 ##Import
 
 >Per Library
 
 ```objective-c
-#import "<UIClass>+<SHCategory>.h"
+#import "<Library>.h"
 ```
 
 >For everything
