@@ -40,7 +40,6 @@
 #####Fifth Sample
 
 ```objective-c
--(void)fifthSample; {
   [self.btnSample SH_addControlEventTouchUpInsideWithBlock:^(UIControl *sender) {
     dispatch_group_t groupSignal = dispatch_group_create();
     [SHUser loginWithGroupSignal:groupSignal];
@@ -53,7 +52,18 @@
   
   [self.btnSample sendActionsForControlEvents:UIControlEventTouchUpInside];
   
-}
 
 ```
+
+#####Sixth Sample
+```objective-c
+  dispatch_group_t groupSignal = dispatch_group_create();
+  [SHUser loginWithGroupSignal:groupSignal];
+  [SHUser fetchFriendsWithGroupSignal:groupSignal];
+  dispatch_group_notify(groupSignal, dispatch_get_main_queue(), ^{
+    NSLog(@"They're both done!");
+  });
+
+```
+
   

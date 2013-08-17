@@ -13,6 +13,7 @@
 
 @interface SHUser : NSObject
 +(void)loginWithGroupSignal:(dispatch_group_t)theSignal;
++(void)fetchFriendsWithGroupSignal:(dispatch_group_t)theSignal;
 @end
 
 @implementation SHUser
@@ -24,6 +25,10 @@
   dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
     dispatch_group_leave(theSignal);
   });
+}
+
++(void)fetchFriendsWithGroupSignal:(dispatch_group_t)theSignal; {
+  [self loginWithGroupSignal:theSignal];
 }
 
 @end
@@ -40,10 +45,13 @@
 
 @property(nonatomic,assign) BOOL       didLogin;
 
+
 -(void)firstSample;
 -(void)secondSample;
 -(void)thirdSample;
 -(void)fourthSample;
+-(void)fifthSample;
+-(void)sixthSample;
 @end
 
 @implementation SHViewController
@@ -54,7 +62,7 @@
   [self thirdSample];
   [self fourthSample];
   [self fifthSample];
-  
+  [self sixthSample];
 }
 
 -(void)firstSample; {
@@ -130,6 +138,19 @@
   }];
   
   [self.btnSample sendActionsForControlEvents:UIControlEventTouchUpInside];
+  
+}
+
+
+-(void)sixthSample; {
+  dispatch_group_t groupSignal = dispatch_group_create();
+  [SHUser loginWithGroupSignal:groupSignal];
+  [SHUser fetchFriendsWithGroupSignal:groupSignal];
+  dispatch_group_notify(groupSignal, dispatch_get_main_queue(), ^{
+    NSLog(@"They're both done!");
+  });
+  
+
   
 }
 
