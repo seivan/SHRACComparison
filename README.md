@@ -66,4 +66,38 @@
 
 ```
 
+
+#####Seventh Sample
+```objective-c
+  __block BOOL        isLoggedIn = NO;
+  __weak typeof(self) weakSelf   = self;
+
+  SHControlEventBlock validateTextFieldBlock = ^(UIControl * sender){
+    BOOL textFieldsNonEmpty = weakSelf.usernameTextField.text.length > 0 && weakSelf.passwordTextField.text.length > 0;
+    BOOL readyToLogIn = [SHUser isLoggingIn] == NO && isLoggedIn == NO;
+    weakSelf.logInButton.enabled = textFieldsNonEmpty && readyToLogIn;
+  };
+  
+  [self.usernameTextField SH_addControlEvents:UIControlEventEditingChanged withBlock:validateTextFieldBlock];
+  [self.passwordTextField SH_addControlEvents:UIControlEventEditingChanged withBlock:validateTextFieldBlock];
+  
+  [self.logInButton SH_addControlEventTouchUpInsideWithBlock:^(UIControl *sender) {
+    dispatch_group_t successSignal = dispatch_group_create();
+    dispatch_group_t failureSignal = dispatch_group_create();
+
+    [SHUser loginWithUsername:weakSelf.usernameTextField.text andPassword:weakSelf.passwordTextField.text
+            withSuccessSignal:successSignal orFailureSignal:failureSignal];
+    
+    dispatch_group_notify(successSignal, dispatch_get_main_queue(), ^{
+      isLoggedIn = YES;
+      validateTextFieldBlock(nil);
+    });
+    
+    dispatch_group_notify(failureSignal, dispatch_get_main_queue(), ^{
+      NSLog(@"Error logging in!");
+    });
+
+  }];
+```
+
   

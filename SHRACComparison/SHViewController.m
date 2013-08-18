@@ -12,11 +12,26 @@
 #import "SHUIKitBlocks.h"
 
 @interface SHUser : NSObject
++(void)loginWithUsername:(NSString *)theUsername andPassword:(NSString *)thePassword
+       withSuccessSignal:(dispatch_group_t)theSuccessSignal orFailureSignal:(dispatch_group_t)theFailureSignal;
 +(void)loginWithGroupSignal:(dispatch_group_t)theSignal;
 +(void)fetchFriendsWithGroupSignal:(dispatch_group_t)theSignal;
++(BOOL)isLoggingIn;
 @end
 
 @implementation SHUser
+
++(void)loginWithUsername:(NSString *)theUsername andPassword:(NSString *)thePassword
+       withSuccessSignal:(dispatch_group_t)theSuccessSignal orFailureSignal:(dispatch_group_t)theFailureSignal; {
+  
+  dispatch_group_enter(theSuccessSignal);
+  dispatch_group_enter(theFailureSignal);
+  double delayInSeconds = 5.0;
+  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    dispatch_group_leave(theSuccessSignal);
+  });
+}
 
 +(void)loginWithGroupSignal:(dispatch_group_t)theSignal; {
   dispatch_group_enter(theSignal);
@@ -31,6 +46,9 @@
   [self loginWithGroupSignal:theSignal];
 }
 
++(BOOL)isLoggingIn; {
+  return NO;
+}
 @end
 
 @interface SHViewController ()
@@ -44,6 +62,12 @@
 @property(nonatomic,strong) UIButton * btnSample;
 
 @property(nonatomic,assign) BOOL       didLogin;
+
+
+@property(nonatomic,strong) UITextField * usernameTextField;
+@property(nonatomic,strong) UITextField * passwordTextField;
+@property(nonatomic,strong) UIButton    * logInButton;
+
 
 
 -(void)firstSample;
@@ -63,6 +87,8 @@
   [self fourthSample];
   [self fifthSample];
   [self sixthSample];
+  [self prepareSample];
+  [self seventhSample];
 }
 
 -(void)firstSample; {
@@ -150,7 +176,65 @@
     NSLog(@"They're both done!");
   });
   
+}
 
+-(void)prepareSample; {
+  self.usernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, 200, 50)];
+  self.passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(50, 260, 200, 50)];
+  self.logInButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+  self.logInButton.frame = CGRectMake(50, 320, 100, 50);
+  [self.logInButton setTitle:@"Login" forState:UIControlStateNormal];
+  [self.logInButton setTitle:@"Disabled" forState:UIControlStateDisabled];
+  [self.view addSubview:self.usernameTextField];
+  [self.view addSubview:self.passwordTextField];
+  [self.view addSubview:self.logInButton];
+  
+}
+
+
+
+
+#pragma mark - Preparations
+
+-(void)seventhSample; {
+  __block BOOL        isLoggedIn = NO;
+  __weak typeof(self) weakSelf   = self;
+
+  SHControlEventBlock validateTextFieldBlock = ^(UIControl * sender){
+    BOOL textFieldsNonEmpty = weakSelf.usernameTextField.text.length > 0 && weakSelf.passwordTextField.text.length > 0;
+    BOOL readyToLogIn = [SHUser isLoggingIn] == NO && isLoggedIn == NO;
+    weakSelf.logInButton.enabled = textFieldsNonEmpty && readyToLogIn;
+  };
+  
+  [self.usernameTextField SH_addControlEvents:UIControlEventEditingChanged withBlock:validateTextFieldBlock];
+  [self.passwordTextField SH_addControlEvents:UIControlEventEditingChanged withBlock:validateTextFieldBlock];
+  
+  [self.logInButton SH_addControlEventTouchUpInsideWithBlock:^(UIControl *sender) {
+    dispatch_group_t successSignal = dispatch_group_create();
+    dispatch_group_t failureSignal = dispatch_group_create();
+
+    [SHUser loginWithUsername:weakSelf.usernameTextField.text andPassword:weakSelf.passwordTextField.text
+            withSuccessSignal:successSignal orFailureSignal:failureSignal];
+    
+    dispatch_group_notify(successSignal, dispatch_get_main_queue(), ^{
+      isLoggedIn = YES;
+      validateTextFieldBlock(nil);
+    });
+    
+    dispatch_group_notify(failureSignal, dispatch_get_main_queue(), ^{
+      NSLog(@"Error logging in!");
+    });
+
+  }];
+  
+  double delayInSeconds = 2.0;
+  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    NSString * text = @"Username And Password";
+    weakSelf.usernameTextField.text = text;
+    weakSelf.passwordTextField.text = text;
+    [weakSelf.usernameTextField sendActionsForControlEvents:UIControlEventEditingChanged];
+  });
   
 }
 
