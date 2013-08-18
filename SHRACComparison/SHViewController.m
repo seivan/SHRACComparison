@@ -90,6 +90,7 @@
   [self sixthSample];
   [self prepareSample];
   [self seventhSample];
+  [self collectionTransformSample];
 }
 
 -(void)firstSample; {
@@ -244,8 +245,8 @@
 -(void)collectionTransformSample; {
   NSArray * sample = @[@"123123", @"1", @"Apples", @"OZ", @"o", @"Sseivan"];
   
-  NSArray * results = [[sample
-                        SH_findAll:^BOOL(NSString * obj) {
+  typeof(sample) results = [[sample
+                       SH_findAll:^BOOL(NSString * obj) {
                           return obj.length >= 2;
                         }]
                        SH_map:^id(NSString * obj) {
