@@ -76,6 +76,7 @@
 -(void)fourthSample;
 -(void)fifthSample;
 -(void)sixthSample;
+-(void)collectionTransformSample;
 @end
 
 @implementation SHViewController
@@ -219,6 +220,7 @@
     dispatch_group_notify(successSignal, dispatch_get_main_queue(), ^{
       isLoggedIn = YES;
       validateTextFieldBlock(nil);
+      NSLog(@"Logged in");
     });
     
     dispatch_group_notify(failureSignal, dispatch_get_main_queue(), ^{
@@ -234,7 +236,23 @@
     weakSelf.usernameTextField.text = text;
     weakSelf.passwordTextField.text = text;
     [weakSelf.usernameTextField sendActionsForControlEvents:UIControlEventEditingChanged];
+    [weakSelf.logInButton sendActionsForControlEvents:UIControlEventTouchUpInside];
   });
+  
+}
+
+-(void)collectionTransformSample; {
+  NSArray * sample = @[@"123123", @"1", @"Apples", @"OZ", @"o", @"Sseivan"];
+  
+  NSArray * results = [[sample
+                        SH_findAll:^BOOL(NSString * obj) {
+                          return obj.length >= 2;
+                        }]
+                       SH_map:^id(NSString * obj) {
+                         return [obj stringByAppendingString:@"foobar"];
+                       }];
+  
+  NSLog(@"%@", results);
   
 }
 

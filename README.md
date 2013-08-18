@@ -100,4 +100,17 @@
   }];
 ```
 
+
+#####collectionTransformSample
+```objective-c
+  NSArray * results = [[sample
+                        SH_findAll:^BOOL(NSString * obj) {
+                          return obj.length >= 2;
+                        }]
+                       SH_map:^id(NSString * obj) {
+                         return [obj stringByAppendingString:@"foobar"];
+                       }];
+
+```
+
   
