@@ -298,7 +298,7 @@
 
 -(void)eriksTimer:(NSTimer *)theTimer; {
   [theTimer invalidate];
-  self.containerView.hidden = NO;
+  self.containerView.hidden = YES;
 }
 
 @end
