@@ -68,7 +68,7 @@
 @property(nonatomic,strong) UITextField * passwordTextField;
 @property(nonatomic,strong) UIButton    * logInButton;
 
-@property(nonatomic,strong) UIView    * containerView;
+@property(nonatomic,strong) UIView    * playBackArea;
 
 
 
@@ -269,7 +269,8 @@
 //    timer = [NSTimer scheduledTimerWithTimeInterval:later target:weakSelf selector:@selector(eriksTimer:) userInfo:nil repeats:NO];
 
 -(void)erikPriceChallenge; {
-  self.containerView = [UIView new];
+
+  self.playBackArea = [UIView new];
   __block NSTimer * timer = nil;
   typeof(self) weakSelf = self;
   
@@ -282,7 +283,7 @@
   UITapGestureRecognizer * tapGesture = [UITapGestureRecognizer SH_gestureRecognizerWithBlock:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
     switch(state) {
       case UIGestureRecognizerStateEnded: {
-        weakSelf.containerView.hidden = NO;
+        weakSelf.playBackArea.hidden = NO;
         addDelayToHideContainer();
         break;
       }
@@ -291,14 +292,15 @@
     }
   }];
   
-  [self.containerView addGestureRecognizer:tapGesture];
+  UIView * containerView = [UIView new];
+  [containerView addGestureRecognizer:tapGesture];
   
   
 }
 
 -(void)eriksTimer:(NSTimer *)theTimer; {
   [theTimer invalidate];
-  self.containerView.hidden = YES;
+  self.playBackArea.hidden = YES;
 }
 
 @end
