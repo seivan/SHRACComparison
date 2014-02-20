@@ -68,6 +68,9 @@
 @property(nonatomic,strong) UITextField * passwordTextField;
 @property(nonatomic,strong) UIButton    * logInButton;
 
+@property(nonatomic,strong) UIView    * containerView;
+
+
 
 
 -(void)firstSample;
@@ -95,24 +98,22 @@
 
 -(void)firstSample; {
   self.username = @"First Name";
-  
-  NSString * identifier = [self SH_addObserverForKeyPaths:@[@"username"] withOptions:0
-                            block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
-                              NSLog(@"%@", ((SHViewController *)weakSelf).username);
-                            }];
-  
+  NSString * keyPath = @"username";
+  [self SH_addObserverForKeyPath:keyPath block:^(NSKeyValueChange changeType, NSObject *oldValue, NSObject *newValue, NSIndexPath *indexPath) {
+    NSLog(@"%@", newValue);
+  }];
+
   self.username = @"Second Name";
   
-  [self SH_removeObserversWithIdentifiers:@[identifier]];
+  [self SH_removeAllObserversWithIdentifiers:@[keyPath]];
 }
 
 -(void)secondSample; {
-  [self SH_addObserverForKeyPaths:@[@"username"] withOptions:0 block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
-  
-    SHViewController * caller = ((SHViewController *)weakSelf);
-    if([caller.username hasPrefix:@"j"])
-      NSLog(@"%@", caller.username);
-    
+
+  NSString * keyPath = @"username";
+
+  [self SH_addObserverForKeyPath:keyPath block:^(NSKeyValueChange changeType, NSObject *oldValue, NSObject *newValue, NSIndexPath *indexPath) {
+    if([((NSString *)newValue) hasPrefix:@"j"]) NSLog(@"%@", newValue);
   }];
   
   self.username = @"Second Name";
@@ -122,11 +123,11 @@
 }
 
 -(void)thirdSample; {
-  __weak typeof(self) caller = self;
-  SHKeyValueObserverBlock block = ^(id weakSelf, NSString *keyPath, NSDictionary *change) {
-    caller.createEnabled = [caller.password isEqualToString:caller.passwordConfirm];
+  __weak typeof(self) weakSelf = self;
+  SHKeyValueObserverDefaultBlock block = ^(NSString * keyPath, NSDictionary * change) {
+    weakSelf.createEnabled = [weakSelf.password isEqualToString:weakSelf.passwordConfirm];
   };
-  [self SH_addObserverForKeyPaths:@[@"password", @"passwordConfirm"] withOptions:0 block:block];
+  [self SH_addObserverForKeyPaths:@[@"password", @"passwordConfirm"] withOptions:kNilOptions block:block];
   
   self.passwordConfirm = @"LOL";
   self.password = @"ZOL";
@@ -155,14 +156,15 @@
 }
 
 -(void)fifthSample; {
+  __weak typeof(self) weakSelf = self;
   [self.btnSample SH_addControlEventTouchUpInsideWithBlock:^(UIControl *sender) {
     dispatch_group_t groupSignal = dispatch_group_create();
     [SHUser loginWithGroupSignal:groupSignal];
     dispatch_group_notify(groupSignal, dispatch_get_main_queue(), ^{ self.didLogin = YES; });
   }];
   
-  [self SH_addObserverForKeyPaths:@[@"didLogin"] withOptions:0 block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
-    if(self.didLogin) NSLog(@"Logged in successfully");
+  [self SH_addObserverForKeyPaths:@[@"didLogin"] withOptions:kNilOptions block:^(NSString *keyPath, NSDictionary *change) {
+    if(weakSelf.didLogin) NSLog(@"Logged in successfully");
   }];
   
   [self.btnSample sendActionsForControlEvents:UIControlEventTouchUpInside];
@@ -257,5 +259,46 @@
   
 }
 
+//http://twitter.com/erik_price/status/436530964412768256
+
+//Alterntive
+//    NSTimeInterval later = 0.f;
+//    if(timer) later = [timer.fireDate timeIntervalSinceNow];
+//    [timer invalidate];
+//    later += 5.f;
+//    timer = [NSTimer scheduledTimerWithTimeInterval:later target:weakSelf selector:@selector(eriksTimer:) userInfo:nil repeats:NO];
+
+-(void)erikPriceChallenge; {
+  self.containerView = [UIView new];
+  __block NSTimer * timer = nil;
+  typeof(self) weakSelf = self;
+  
+  void (^addDelayToHideContainer)(void) = ^void(void) {
+    if(timer) timer.fireDate = [NSDate dateWithTimeIntervalSince1970:([timer.fireDate timeIntervalSince1970]+5.f)];
+    else timer = [NSTimer scheduledTimerWithTimeInterval:5.f target:weakSelf selector:@selector(eriksTimer:) userInfo:nil repeats:NO];
+  };
+
+  
+  UITapGestureRecognizer * tapGesture = [UITapGestureRecognizer SH_gestureRecognizerWithBlock:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+    switch(state) {
+      case UIGestureRecognizerStateEnded: {
+        weakSelf.containerView.hidden = NO;
+        addDelayToHideContainer();
+        break;
+      }
+      default:
+        break;
+    }
+  }];
+  
+  [self.containerView addGestureRecognizer:tapGesture];
+  
+  
+}
+
+-(void)eriksTimer:(NSTimer *)theTimer; {
+  [theTimer invalidate];
+  self.containerView.hidden = NO;
+}
 
 @end

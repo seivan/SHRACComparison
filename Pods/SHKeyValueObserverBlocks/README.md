@@ -1,44 +1,29 @@
-SHKeyValueObserverBlocks
-==========
+#SHKeyValueObserverBlocks
+
 [![Build Status](https://travis-ci.org/seivan/SHKeyValueObserverBlocks.png?branch=master)](https://travis-ci.org/seivan/SHKeyValueObserverBlocks)
-[![Version](http://cocoapod-badges.herokuapp.com/v/SHKeyValueObserverBlocks/badge.png)](http://cocoadocs.org/docsets/SHKeyValueObserverBlocks)
-[![Platform](http://cocoapod-badges.herokuapp.com/p/SHKeyValueObserverBlocks/badge.png)](http://cocoadocs.org/docsets/SHKeyValueObserverBlocks)
+[![Version](https://cocoapod-badges.herokuapp.com/v/SHKeyValueObserverBlocks/badge.png)](http://cocoadocs.org/docsets/SHKeyValueObserverBlocks)
+[![Platform](https://cocoapod-badges.herokuapp.com/p/SHKeyValueObserverBlocks/badge.png)](http://cocoadocs.org/docsets/SHKeyValueObserverBlocks)
 
-Overview
---------
+> This pod is used by [`SHFoundationAdditions`](https://github.com/seivan/SHFoundationAdditions) as part of many components covering to plug the holes missing from Foundation.
+There is also [`for UIKit`](https://github.com/seivan/SHUIKitBlocks) and others on the way; CoreLocation, GameKit, MapKit and other aspects of an iOS application's architecture.
 
-#### [Check the creating section](https://github.com/seivan/SHKeyValueObserverBlocks#creating)
+##Overview
 
-You can setup observers with all options on multiple keypaths
-
-You can setup observers with specified options on multiple keypaths 
-
-#### [Check the removing section](https://github.com/seivan/SHKeyValueObserverBlocks#removing)
-
-You can remove based on a list of keypaths or identifiers.
-
-You can remove based on both a list of keypaths and and identifiers
-
-#### [Check the configuration section](https://github.com/seivan/SHKeyValueObserverBlocks#configuration)
-
-Prefixed self cleaning (can be deactivated) block based observers on NSObject. 
+Data-Bindings & Key Value Observing with blocks on top of NSObject.
+Blocks are hold with a weak reference so you don't have to cleanup when your object is gone.
+There is an automatic Swizzling config that you can toggle on a per class basis. 
 
 
-
-Installation
-------------
+##Installation
 
 ```ruby
 pod 'SHKeyValueObserverBlocks'
 ```
 
-***
 
-Setup
------
+##Setup
 
-Put this either in specific controllers or your project prefix file
-
+Put this either in specific files or your project prefix file
 ```objective-c
 #import "NSObject+SHKeyValueObserverBlocks.h"
 ```
@@ -47,112 +32,151 @@ or
 #import "SHKeyValueObserverBlocks.h"
 ```
 
-Usage
------
+##Usage
 
-### Creating
+##### Adding Observer on an NSArray to keep track of your data source
+```objective-c
+  NSString * path = @"languagesArray";
+  NSString * identifier = [self SH_addObserverForKeyPath:path 
+                                                  block:^(
+                                                  NSKeyValueChange changeType, 
+                                                  NSObject * oldValue, 
+                                                  NSObject * newValue, 
+                                                  NSIndexPath *indexPath) {
+    switch (changeType) {
+      case NSKeyValueChangeSetting:
+        NSLog(@"Setting %@", newValue);
+        break;
+      case NSKeyValueChangeInsertion:
+        NSLog(@"Inserting %@", newValue);
+        break;
+      case NSKeyValueChangeRemoval:
+        NSLog(@"Removal %@", oldValue);
+        break;
+      case NSKeyValueChangeReplacement:
+        NSLog(@"ChangeReplacement %@", newValue);
+        break;
+      default:
+        break;
+    }
+  }];
+  
+  NSLog(@"Starting with NSArray");
 
-With SHKeyValueObserverBlocks you can observe with all optins toggled in a single block:
+  self.languagesArray = @[@"Python"];
+  [[self mutableArrayValueForKey:path] addObject:@"C++"];
+  [[self mutableArrayValueForKey:path] addObject:@"Objective-c"];
+  [[self mutableArrayValueForKey:path] replaceObjectAtIndex:0 withObject:@"Ruby"];
+  [[self mutableArrayValueForKey:path] removeObject:@"C++"];
+  NSLog(@"%@", self.languagesArray);
+
+```
+
+##### Set a uni directional binding with a transform block
 
 ```objective-c
-  NSArray * keyPaths = @[@"players"].setRepresentation;
-  NSString * identifier = [self SH_addObserverForKeyPaths:keyPaths
-                                                    block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
-    NSLog(@"identifier: %@ - %@",change, keyPath);
+NSString * identifier =  [self SH_setBindingUniObserverKeyPath:@"playersDictionary" 
+                                                      toObject:self
+                                                   withKeyPath:@"othersDictionary"
+                                           transformValueBlock:^id(
+                                           NSObject *object, 
+                                           NSString *keyPath, 
+                                           NSObject * newValue, 
+                                           BOOL *shouldAbort) {
+    return newValue.mutableCopy ;
   }];
 
+```
 
-
-``` 
-
-or if you want setup manual options
+##### Set a bi-directional binding
 
 ```objective-c
+NSArray * identifiers = [self.model SH_setBindingObserverKeyPath:@"errors" 
+                                                        toObject:self 
+                                                     withKeyPath:@"errors"];
+```
+
+##### Can use the macro SHKey() for using selectors as a keyPath for autocomplete goodness. 
+
+```objective-c
+NSArray * identifiers = [self.model SH_setBindingObserverKeyPath:@"errors" 
+                                                        toObject:self 
+                                                     withKeyPath:SHKey(errors)"];
+```
+
+
+
+##[API](https://github.com/seivan/SHKeyValueObserverBlocks/blob/develop/SHKeyValueObserverBlocks/NSObject%2BSHKeyValueObserverBlocks.h)
+
+```objective-c
+
+#pragma mark - Block Definitions
+
+typedef void (^SHKeyValueObserverSplatBlock)(NSKeyValueChange changeType,
+                                             id<NSObject> oldValue, id<NSObject> newValue,
+                                             NSIndexPath * indexPath);
+
+typedef void (^SHKeyValueObserverDefaultBlock)(NSString * keyPath,
+                                               NSDictionary * change);
+
+typedef id(^SHKeyValueObserverBindingTransformBlock)(NSObject * object,
+                                                     NSString * keyPath,
+                                                     id<NSObject> newValue,
+                                                     BOOL *shouldAbort);
+
+@interface NSObject (SHKeyValueObserverBlocks)
+
+#pragma mark - Config
++(BOOL)SH_isAutoRemovingObservers;
++(void)SH_setAutoRemovingObservers:(BOOL)isAutoRemovingObservers;
+
+#pragma mark - Properties
+@property(nonatomic,readonly) NSDictionary * SH_observedKeyPaths;
+
+#pragma mark - Add Observers
+
+-(NSString *)SH_addObserverForKeyPath:(NSString *)theKeyPath
+                                 block:(SHKeyValueObserverSplatBlock)theBlock;
+
+
 -(NSString *)SH_addObserverForKeyPaths:(NSArray *)theKeyPaths
                            withOptions:(NSKeyValueObservingOptions)theOptions
-                                 block:(SHKeyValueObserverBlock)theBlock;
+                                 block:(SHKeyValueObserverDefaultBlock)theBlock;
 
 
-```
-
-### Removing
+#pragma mark - Set Bindings
 
 
-#### If you want to deal with the cleanup manually (I can understand if you want to avoid the Swizzle)
+-(NSArray *)SH_setBindingObserverKeyPath:(NSString *)theKeyPath
+                                toObject:(NSObject *)theObject
+                             withKeyPath:(NSString *)theOtherKeyPath;
 
-```objective-c
+-(NSString *)SH_setBindingUniObserverKeyPath:(NSString *)theKeyPath
+                                    toObject:(NSObject *)theObject
+                                 withKeyPath:(NSString *)theOtherKeyPath;
+
+-(NSString *)SH_setBindingUniObserverKeyPath:(NSString *)theKeyPath
+                                    toObject:(NSObject *)theObject
+                                 withKeyPath:(NSString *)theOtherKeyPath
+                             transformValueBlock:(SHKeyValueObserverBindingTransformBlock)theBlock;
+
+
+
+#pragma mark - Remove Observers
+-(void)SH_removeAllObserversWithIdentifiers:(NSArray *)theIdentifiers;
+-(void)SH_removeAllObserversForKeyPaths:(NSArray *)theKeyPaths;
 -(void)SH_removeAllObservers;
-```
 
-#### Get rid of all observers of certain keypaths (regardless of identifier)
 
-```objective-c
--(void)SH_removeObserversForKeyPaths:(NSArray *)theKeyPaths;
-```
-
-#### Get rid of all observers of certain identifiers (regardless of keypaths)
-
-```objective-c
--(void)SH_removeObserversWithIdentifiers:(NSArray *)theIdentifiers;
-```
-
-#### Get rid of all observers of certain keypaths with certain idenitifers;
-
-```objective-c
--(void)SH_removeObserversForKeyPaths:(NSArray *)theKeyPaths
-                         withIdentifiers:(NSArray *)theIdentifiers;
-```
-
-Configuration
------- 
-
-You can turn off the auto removal of observers and blocks by setting
-
-```objective-c
-+(void)SH_setAutoRemovingObservers:(BOOL)shouldRemoveObservers;
+@end
 
 ```
 
-Existing Codebase 
------------------
+##Credit
 
-If you already have  
+Thanks to [Yan Rabovik](https://twitter.com/rabovik) for [RSSwizzle](https://github.com/rabovik/RSSwizzle)
 
-```objective-c
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
-``` 
-
-implemented and used within your code base you can use the block handler
-
-```objective-c
--(BOOL)SH_handleObserverForKeyPath:(NSString *)theKeyPath
-                        withChange:(NSDictionary *)theChange
-                           context:(void *)context;
-```
-
-Like this 
-
-```objective-c
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;  {
-  if([self SH_handleObserverForKeyPath:keyPath withChange:change context:context])
-    NSLog(@"TAKEN CARE OF BY BLOCK");
-  else
-    NSLog(@"Take care of here!");
-    
-}
-```
-That will check if there is block **and** if there is - execute it. 
-
-Replacing
----------
-
-```objective-c
-[self addObserver:self forKeyPath:@"mutableArray" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionPrior context:NULL]
-```
-
-
-Contact
--------
+##Contact
 
 If you end up using SHKeyValueObserverBlocks in a project, I'd love to hear about it.
 

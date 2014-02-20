@@ -1,8 +1,10 @@
 SHGestureRecognizerBlocks
 ==========
 [![Build Status](https://travis-ci.org/seivan/SHGestureRecognizerBlocks.png?branch=master)](https://travis-ci.org/seivan/SHGestureRecognizerBlocks)
-[![Version](http://cocoapod-badges.herokuapp.com/v/SHGestureRecognizerBlocks/badge.png)](http://cocoadocs.org/docsets/SHGestureRecognizerBlocks)
-[![Platform](http://cocoapod-badges.herokuapp.com/p/SHGestureRecognizerBlocks/badge.png)](http://cocoadocs.org/docsets/SHGestureRecognizerBlocks)
+[![Version](https://cocoapod-badges.herokuapp.com/v/SHGestureRecognizerBlocks/badge.png)](http://cocoadocs.org/docsets/SHGestureRecognizerBlocks)
+[![Platform](https://cocoapod-badges.herokuapp.com/p/SHGestureRecognizerBlocks/badge.png)](http://cocoadocs.org/docsets/SHGestureRecognizerBlocks)
+
+> This pod is used by [`SHUIKitBlocks`](https://github.com/seivan/SHUIKitBlocks) as part of many components covering to plug the holes missing from Foundation, UIKit, CoreLocation, GameKit, MapKit and other aspects of an iOS application's architecture.
 
 Overview
 --------

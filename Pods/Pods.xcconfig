@@ -1,22 +1,5 @@
-#include "Pods-SHActionSheetBlocks.xcconfig"
-#include "Pods-SHAlertViewBlocks.xcconfig"
-#include "Pods-SHBarButtonItemBlocks.xcconfig"
-#include "Pods-SHControlBlocks.xcconfig"
-#include "Pods-SHFastEnumerationProtocols.xcconfig"
-#include "Pods-SHFoundationAdditions.xcconfig"
-#include "Pods-SHGestureRecognizerBlocks.xcconfig"
-#include "Pods-SHInvocation.xcconfig"
-#include "Pods-SHKeyValueObserverBlocks.xcconfig"
-#include "Pods-SHNavigationControllerBlocks.xcconfig"
-#include "Pods-SHObjectUserInfo.xcconfig"
-#include "Pods-SHPopoverControllerBlocks.xcconfig"
-#include "Pods-SHSegueBlocks.xcconfig"
-#include "Pods-SHTabBarControllerBlocks.xcconfig"
-#include "Pods-SHTextFieldBlocks.xcconfig"
-#include "Pods-SHTextViewBlocks.xcconfig"
-#include "Pods-SHUIKitBlocks.xcconfig"
-#include "Pods-SHWebViewBlocks.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/SHActionSheetBlocks" "${PODS_ROOT}/Headers/SHAlertViewBlocks" "${PODS_ROOT}/Headers/SHBarButtonItemBlocks" "${PODS_ROOT}/Headers/SHControlBlocks" "${PODS_ROOT}/Headers/SHFastEnumerationProtocols" "${PODS_ROOT}/Headers/SHFoundationAdditions" "${PODS_ROOT}/Headers/SHGestureRecognizerBlocks" "${PODS_ROOT}/Headers/SHInvocation" "${PODS_ROOT}/Headers/SHKeyValueObserverBlocks" "${PODS_ROOT}/Headers/SHNavigationControllerBlocks" "${PODS_ROOT}/Headers/SHObjectUserInfo" "${PODS_ROOT}/Headers/SHPopoverControllerBlocks" "${PODS_ROOT}/Headers/SHSegueBlocks" "${PODS_ROOT}/Headers/SHTabBarControllerBlocks" "${PODS_ROOT}/Headers/SHTextFieldBlocks" "${PODS_ROOT}/Headers/SHTextViewBlocks" "${PODS_ROOT}/Headers/SHUIKitBlocks" "${PODS_ROOT}/Headers/SHWebViewBlocks"
-OTHER_LDFLAGS = -ObjC
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/RSSwizzle" "${PODS_ROOT}/Headers/SHActionSheetBlocks" "${PODS_ROOT}/Headers/SHAlertViewBlocks" "${PODS_ROOT}/Headers/SHBarButtonItemBlocks" "${PODS_ROOT}/Headers/SHControlBlocks" "${PODS_ROOT}/Headers/SHFastEnumerationProtocols" "${PODS_ROOT}/Headers/SHFoundationAdditions" "${PODS_ROOT}/Headers/SHGestureRecognizerBlocks" "${PODS_ROOT}/Headers/SHInvocation" "${PODS_ROOT}/Headers/SHKeyValueObserverBlocks" "${PODS_ROOT}/Headers/SHNavigationControllerBlocks" "${PODS_ROOT}/Headers/SHObjectUserInfo" "${PODS_ROOT}/Headers/SHPopoverControllerBlocks" "${PODS_ROOT}/Headers/SHSegueBlocks" "${PODS_ROOT}/Headers/SHTabBarControllerBlocks" "${PODS_ROOT}/Headers/SHTextFieldBlocks" "${PODS_ROOT}/Headers/SHTextViewBlocks" "${PODS_ROOT}/Headers/SHTransitionBlocks" "${PODS_ROOT}/Headers/SHUIKitBlocks" "${PODS_ROOT}/Headers/SHWebViewBlocks"
+OTHER_CFLAGS = $(inherited) "-isystem${PODS_ROOT}/Headers" "-isystem${PODS_ROOT}/Headers/RSSwizzle" "-isystem${PODS_ROOT}/Headers/SHActionSheetBlocks" "-isystem${PODS_ROOT}/Headers/SHAlertViewBlocks" "-isystem${PODS_ROOT}/Headers/SHBarButtonItemBlocks" "-isystem${PODS_ROOT}/Headers/SHControlBlocks" "-isystem${PODS_ROOT}/Headers/SHFastEnumerationProtocols" "-isystem${PODS_ROOT}/Headers/SHFoundationAdditions" "-isystem${PODS_ROOT}/Headers/SHGestureRecognizerBlocks" "-isystem${PODS_ROOT}/Headers/SHInvocation" "-isystem${PODS_ROOT}/Headers/SHKeyValueObserverBlocks" "-isystem${PODS_ROOT}/Headers/SHNavigationControllerBlocks" "-isystem${PODS_ROOT}/Headers/SHObjectUserInfo" "-isystem${PODS_ROOT}/Headers/SHPopoverControllerBlocks" "-isystem${PODS_ROOT}/Headers/SHSegueBlocks" "-isystem${PODS_ROOT}/Headers/SHTabBarControllerBlocks" "-isystem${PODS_ROOT}/Headers/SHTextFieldBlocks" "-isystem${PODS_ROOT}/Headers/SHTextViewBlocks" "-isystem${PODS_ROOT}/Headers/SHTransitionBlocks" "-isystem${PODS_ROOT}/Headers/SHUIKitBlocks" "-isystem${PODS_ROOT}/Headers/SHWebViewBlocks"
+OTHER_LDFLAGS = -ObjC -framework Foundation
 PODS_ROOT = ${SRCROOT}/Pods

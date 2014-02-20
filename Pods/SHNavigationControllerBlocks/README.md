@@ -1,9 +1,10 @@
 SHNavigationControllerBlocks
 ==========
 [![Build Status](https://travis-ci.org/seivan/SHNavigationControllerBlocks.png?branch=master)](https://travis-ci.org/seivan/SHNavigationControllerBlocks)
-[![Version](http://cocoapod-badges.herokuapp.com/v/SHNavigationControllerBlocks/badge.png)](http://cocoadocs.org/docsets/SHNavigationControllerBlocks)
-[![Platform](http://cocoapod-badges.herokuapp.com/p/SHNavigationControllerBlocks/badge.png)](http://cocoadocs.org/docsets/SHNavigationControllerBlocks)
+[![Version](https://cocoapod-badges.herokuapp.com/v/SHNavigationControllerBlocks/badge.png)](http://cocoadocs.org/docsets/SHNavigationControllerBlocks)
+[![Platform](https://cocoapod-badges.herokuapp.com/p/SHNavigationControllerBlocks/badge.png)](http://cocoadocs.org/docsets/SHNavigationControllerBlocks)
 
+> This pod is used by [`SHUIKitBlocks`](https://github.com/seivan/SHUIKitBlocks) as part of many components covering to plug the holes missing from Foundation, UIKit, CoreLocation, GameKit, MapKit and other aspects of an iOS application's architecture.
 
 Overview
 --------
@@ -19,7 +20,8 @@ Installation
 ------------
 
 ```ruby
-pod 'SHNavigationControllerBlocks'
+pod 'SHNavigationControllerBlocks' 
+pod 'SHNavigationControllerBlocks', '~> 1.0.0' # for iOS 6
 ```
 
 ***
@@ -44,29 +46,55 @@ API
 
 ```objective-c
 
-#pragma mark -
-#pragma mark Block Def
 
-typedef void (^SHNavigationControllerBlock)(UINavigationController * theNavigationController,
-                                            UIViewController       * theViewController,
+#pragma mark - Block Definitions
+typedef void (^SHNavigationControllerBlock)(UINavigationController * navigationController,
+                                            UIViewController       * viewController,
                                             BOOL                      isAnimated);
 
-                                            
-#pragma mark -
-#pragma mark Properties
+typedef UIInterfaceOrientation(^SHNavigationControllerOrientationBlock)(UINavigationController * navigationController);
 
-#pragma mark -
-#pragma mark Setters
+typedef id<UIViewControllerInteractiveTransitioning>
+(^SHNavigationControllerInteractiveControllerBlock)(UINavigationController * navigationController,
+                                                    id<UIViewControllerAnimatedTransitioning> animationController);
+
+typedef id<UIViewControllerAnimatedTransitioning>
+(^SHNavigationControllerAnimatedControllerBlock) (UINavigationController * navigationController,
+                                                  UINavigationControllerOperation operation,
+                                                  UIViewController * fromVC,
+                                                  UIViewController * toVC
+                                                  );
+
+
+@interface UINavigationController (SHNavigationControllerBlocks)
+
+
+
+#pragma mark - Properties
+
+#pragma mark - Setters
 
 -(void)SH_setWillShowViewControllerBlock:(SHNavigationControllerBlock)theBlock;
 
 -(void)SH_setDidShowViewControllerBlock:(SHNavigationControllerBlock)theBlock;
 
-#pragma mark -
-#pragma mark Getters
+-(void)SH_setPreferredInterfaceOrientationForPresentatationBlock:(SHNavigationControllerOrientationBlock)theBlock;
+
+-(void)SH_setInteractiveControllerBlock:(SHNavigationControllerInteractiveControllerBlock)theBlock;
+
+-(void)SH_setAnimatedControllerBlock:(SHNavigationControllerAnimatedControllerBlock)theBlock;
+
+#pragma mark - Getters
 
 @property(nonatomic,readonly) SHNavigationControllerBlock SH_blockWillShowViewController;
 @property(nonatomic,readonly) SHNavigationControllerBlock SH_blockDidShowViewController;
+@property(nonatomic,readonly) SHNavigationControllerOrientationBlock SH_blockInterfaceOrientationForPresentation;
+@property(nonatomic,readonly) SHNavigationControllerInteractiveControllerBlock SH_blockInteractiveController;
+@property(nonatomic,readonly) SHNavigationControllerAnimatedControllerBlock SH_blockAnimatedController;
+
+
+@end
+
 ```
 
 
