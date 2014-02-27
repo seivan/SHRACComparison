@@ -1,4 +1,3 @@
-
 #####First Sample
 ```objective-c
   [self SH_addObserverForKeyPaths:@[@"username"] withOptions:0 block:^(id weakSelf, NSString *keyPath, NSDictionary *change) {
@@ -25,7 +24,7 @@
   SHKeyValueObserverBlock block = ^(id weakSelf, NSString *keyPath, NSDictionary *change) {
     caller.createEnabled = [caller.password isEqualToString:caller.passwordConfirm];
   };
-  [self SH_addObserverForKeyPaths:@[@"password", @"passwordConfirm"] withOptions:0 block:block];
+  [self SH_addObserverForKeyPaths:@[@"password", @"passwordConfirm"] withOptions:kNilOptions block:block];
   
 ```
 
