@@ -10,7 +10,7 @@
 #####Second Sample
 ```objective-c
   __weak typeof(self) weakSelf = self;
-  [self SH_addObserverForKeyPaths:@[@"username"] withOptions:0 block:^(__unused NSString *keyPath, __unused  NSDictionary *change) {
+  [self SH_addObserverForKeyPaths:@[@"username"] withOptions:kNilOptions block:^(__unused NSString *keyPath, __unused  NSDictionary *change) {
   
     if([weakSelf.username hasPrefix:@"j"]) 
     NSLog(@"%@", weakSelf.username);
@@ -41,7 +41,7 @@
 
 ```objective-c
   __weak typeof(self) weakSelf
-  [self.btnSample SH_addControlEventTouchUpInsideWithBlock:^(UIControl *sender) {
+  [self.btnSample SH_addControlEventTouchUpInsideWithBlock:^(__unused UIControl *sender) {
     dispatch_group_t groupSignal = dispatch_group_create();
     [SHUser loginWithGroupSignal:groupSignal];
     dispatch_group_notify(groupSignal, dispatch_get_main_queue(), ^{ weakSelf.didLogin = YES; });
