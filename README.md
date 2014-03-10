@@ -47,7 +47,7 @@
     dispatch_group_notify(groupSignal, dispatch_get_main_queue(), ^{ weakSelf.didLogin = YES; });
   }];
   
-  [self SH_addObserverForKeyPaths:@[@"didLogin"] withOptions:0 block:^(__unused NSString *keyPath, __unused  NSDictionary *change) {
+  [self SH_addObserverForKeyPaths:@[@"didLogin"] withOptions:kNilOptions block:^(__unused NSString *keyPath, __unused  NSDictionary *change) {
     if(weakSelf.didLogin) NSLog(@"Logged in successfully");
   }];
   
