@@ -2,7 +2,7 @@
 ```objective-c
   __weak typeof(self) weakSelf = self;
   [self SH_addObserverForKeyPaths:@[@"username"] withOptions:kNilOptions block:^(__unused NSString *keyPath, __unused NSDictionary *change) {
-    NSLog(@"%@", ((SHViewController *)weakSelf).username);
+    NSLog(@"%@", weakSelf.username);
     }];
 
 ```
