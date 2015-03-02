@@ -22,10 +22,9 @@
 #####Third Sample
 ```objective-c
   __weak typeof(self) weakself = self;
-  SHKeyValueObserverBlock block = ^(__unused NSString *keyPath, __unused NSDictionary *change) {
+  [self SH_addObserverForKeyPaths:@[@"password", @"passwordConfirm"] withOptions:kNilOptions block:^(__unused NSString *keyPath, __unused NSDictionary *change) {
     weakSelf.createEnabled = [weakSelf.password isEqualToString:caller.passwordConfirm];
-  };
-  [self SH_addObserverForKeyPaths:@[@"password", @"passwordConfirm"] withOptions:kNilOptions block:block];
+  }];
   
 ```
 
